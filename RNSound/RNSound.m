@@ -147,8 +147,8 @@ RCT_EXPORT_METHOD(setMode : (NSString *)modeName) {
 }
 
 RCT_EXPORT_METHOD(setCategory
-                  : (NSString *)categoryName mixWithOthers
-                  : (BOOL)mixWithOthers) {
+                  : (NSString *)categoryName duckAudio
+                  : (BOOL)duckAudio) {
     AVAudioSession *session = [AVAudioSession sharedInstance];
     NSString *category = nil;
 
@@ -173,13 +173,15 @@ RCT_EXPORT_METHOD(setCategory
     }
 
     if (category) {
-        if (mixWithOthers) {
+        if (duckAudio) {
             [session setCategory:category
                      withOptions:AVAudioSessionCategoryOptionDuckOthers 
                      //| AVAudioSessionCategoryOptionAllowBluetooth
                            error:nil];
         } else {
-            [session setCategory:category error:nil];
+            [session setCategory:category 
+                      withOptions:AVAudioSessionCategoryOptionMixWithOthers
+                            error:nil];
         }
     }
 }
